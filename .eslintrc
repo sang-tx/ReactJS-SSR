@@ -1,0 +1,60 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "@mizdra/layout-shift",
+    "lodash",
+    "jsx-a11y"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": "error",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "variables": false
+      }
+    ],
+    "indent": [
+      "warn",
+      2,
+      {
+        "VariableDeclarator": 1,
+        "SwitchCase": 1,
+        "outerIIFEBody": 1,
+        "MemberExpression": 1,
+        "FunctionDeclaration": {"body": 1, "parameters": 1},
+        "FunctionExpression": {"body": 1, "parameters": 1},
+        "ArrayExpression": 1,
+        "ObjectExpression": 1,
+        "ImportDeclaration": 1
+      }
+    ],
+    "react/jsx-curly-newline": "off",
+    "@mizdra/layout-shift/require-size-attributes": 2,
+    "lodash/import-scope": [
+      2,
+      "method"
+    ],
+    "no-restricted-imports": [
+      "error",
+      "react-modal",
+      "react-copy-to-clipboard",
+      "react-select",
+      "react-slick",
+      "react-tiny-spin"
+    ],
+    "jsx-a11y/alt-text": [
+      "error"
+    ],
+    "camelcase": "off"
+  }
+}
