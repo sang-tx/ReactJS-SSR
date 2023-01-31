@@ -1,0 +1,67 @@
+---
+name: CI
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request
+  # events but only for the master branch
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches: [master, develop, release]
+
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    # Steps represent a sequence of tasks that
+    # will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE,
+      # so your job can access it
+      - uses: actions/checkout@v3
+
+      # Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.12.1'
+          cache: 'yarn'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: yarn
+
+      # Run test suites
+      - name: Run test suites
+        run: yarn lint
+
+      # Run server
+      - name: Run server
+        run: |
+          yarn build
+          yarn start &
+
+      # Wait server response
+      - name: Wait server response
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: 'http://localhost:3000/'
+          responseCode: 200
+          timeout: 30000
+          interval: 500
+
+      # Run PageSpeed Insights
+
+      - name: Run Lighthouse on urls and validate with lighthouserc
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            'http://localhost:3000'
+            'http://localhost:3000/about'
+          configPath: '.lighthouserc.js'
+          # Set to `true` to upload lighthouse report to the temporary storage
+          temporaryPublicStorage: true
